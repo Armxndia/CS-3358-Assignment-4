@@ -22,8 +22,6 @@ private:
     BinNode* root;
 	
 	void free_helper(BinNode* node);
-	// BinNode* find_helper(BinNode* node, int k);  //optional helper function for findInBST
-	// void insert_helper(BinNode* node, int k);  //optional helper function for insertToBST
 	void preOrder(BinNode* node);
 	void postOrder(BinNode* node);
 	void inOrder(BinNode* node);
@@ -42,53 +40,60 @@ void myBST::free_helper(BinNode* node) {
 	}
 }
 
-
-
-// //***************************
-// //recursive implementation***
-// //***************************
-// BinNode* myBST::findInBST(int k) {
-
-// }
-
-// BinNode* myBST::find_helper(BinNode* node, int k) {
-
-// }
-
-
 //*******************************
 //non-recursive implementation***
 //*******************************
 BinNode* myBST::findInBST(int k) {
-
+	BinNode* current = root;
+    while (current != NULL) {
+        if (k == current->key) {
+            return current;
+        } else if (k < current->key) {
+            current = current->left;
+        } else {
+            current = current->right;
+        }
+    }
+    return NULL; // Not found
 }
-
-
-
-
-
-// //***************************
-// //recursive implementation***
-// //***************************
-// void myBST::insertToBST(int k) {
- 
-// }
-
-
-// void myBST::insert_helper(BinNode* node, int k) {
- 
-// }
-
 
 //*******************************
 //non-recursive implementation***
 //*******************************
 void myBST::insertToBST(int k) {
+	BinNode* newNode = new BinNode;
+    newNode->key = k;
+    newNode->left = NULL;
+    newNode->right = NULL;
 
+    if (root == NULL) {
+        root = newNode;
+        return;
+    }
+
+    BinNode* current = root;
+    BinNode* parent = NULL;
+
+    while (current != NULL) {
+        parent = current;
+        if (k < current->key) {
+            current = current->left;
+        } else if (k > current->key) {
+            current = current->right;
+        } else {
+            // if key already exists
+			cout << k << " is an existing key. No new node has been inserted." << endl;
+            delete newNode;
+            return;
+        }
+    }
+
+    if (k < parent->key) {
+        parent->left = newNode;
+    } else {
+        parent->right = newNode;
+    }
 }
-
-
-
 
 //***********************************
 //preOrderTraversal implementation***
@@ -99,9 +104,12 @@ void myBST::preOrderTraversal() {
 }
 
 void myBST::preOrder(BinNode* node) {
-
+	if (node != NULL) {
+			cout << node->key << " ";
+			preOrder(node->left);
+			preOrder(node->right);
+		}
 }
-
 
 //************************************
 //postOrderTraversal implementation***
@@ -112,7 +120,11 @@ void myBST::postOrderTraversal() {
 }
 
 void myBST::postOrder(BinNode* node) {
-
+	if (node != NULL) {
+        postOrder(node->left);
+        postOrder(node->right);
+        cout << node->key << " ";
+    }
 }
 
 
@@ -126,7 +138,11 @@ void myBST::inOrderTraversal() {
 }
 
 void myBST::inOrder(BinNode* node) {
-
+	if (node != NULL) {
+        inOrder(node->left);
+        cout << node->key << " ";
+        inOrder(node->right);
+    }
 }
 
 
